@@ -62,4 +62,11 @@ thead {
   cursor: pointer;
 }
 
+.container {
+  display: block;
+  margin-left: 368px;
+}
 
+.custom-table {
+  line-height: 160px;
+}
