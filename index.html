@@ -55,22 +55,25 @@
             <thead>
               <tr>
                 <th>
-                  <h2 scope="col display-4">City Heading</h2>
+                  <h2 scope="row">
+                    <div id="currentCity">CityHeading</div>
+                    <img id="weatherIcon" src="http://openweathermap.org/img/wn/04n@2x.png" />
+                  </h2>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row currentTemp">Temp:</th>
+                <th id="currentTemperature" scope="row">Temp:</th>
               </tr>
               <tr>
-                <th scope="row currentWind">Wind:</th>
+                <th id="currentWind" scope="row">Wind:</th>
               </tr>
               <tr>
-                <th scope="row currentHumidity">Humidity:</th>
+                <th id="currentHumidity" scope="row">Humidity:</th>
               </tr>
               <tr>
-                <th scope="row currentUvIndex">UV Index:</th>
+                <th id="currentUVIndex" scope="row">UV Index:</th>
               </tr>
             </tbody>
           </table>
