@@ -80,8 +80,6 @@ const formSubmitHandler = function(event) {
   }
 }
 
-// TODO: Print retrieved information to assigned fields
-
 // TODO: Print 5 day forecast in the allotted cards
 
 projectFormEl.addEventListener('submit', formSubmitHandler);
