@@ -70,3 +70,8 @@ thead {
 .custom-table {
   line-height: 160px;
 }
+
+#weatherIcon {
+  display: block;
+  width: 40px;
+}

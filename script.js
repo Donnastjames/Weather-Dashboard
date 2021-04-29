@@ -10,10 +10,12 @@ const currentWindEl = document.getElementById('currentWind');
 const currentHumidityEl = document.getElementById('currentHumidity');
 const currentUVIndexEl = document.getElementById('currentUVIndex');
 const weatherIconEl = document.getElementById('weatherIcon');
+const currentDateEl = document.getElementById('currentDate');
 
-function displayCityWeather({ cityName, windSpeed, temperature, humidity }) {
-  console.log(`displayCityWeather("${cityName}", "${windSpeed}", "${temperature}", "${humidity}")`);
+function displayCityWeather({ cityName, currentDate, windSpeed, temperature, humidity }) {
+  console.log(`displayCityWeather("${cityName}", "${currentDate}", "${windSpeed}", "${temperature}", "${humidity}")`);
   currentCityEl.innerText = cityName;
+  currentDateEl.innerText = currentDate;
   currentWindEl.innerText = "Wind: " + windSpeed + " mph";
   currentTempEl.innerText = "Temp: " + temperature;
   currentHumidityEl.innerText = "Humidity: " + humidity;
@@ -56,6 +58,9 @@ const getCityWeather = function (cityName) {
       console.log('2. data:\n', JSON.stringify(data, null, 2));
       displayCityWeather({
         cityName: data.name,
+        // For some reason this api returns dt as seconds since Epoch
+        // so I need to multiply it by 1000 to work with Javascript Date() ...
+        currentDate: new Date(data.dt * 1000).toLocaleDateString(),
         windSpeed: data.wind.speed,
         temperature: data.main.temp,
         humidity: data.main.humidity,
@@ -69,6 +74,8 @@ const getCityWeather = function (cityName) {
       );
     });
 }
+
+// const getFiveDayForecast = function (cityName)
 
 const formSubmitHandler = function(event) {
   console.log('formSubmitHandler()');
