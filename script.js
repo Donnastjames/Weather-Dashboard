@@ -1,6 +1,74 @@
 
+const max_cities_stored_count = 4; // TODO: Change back to 8 later
 const base_url = 'https://api.openweathermap.org/data/2.5'
 const appid = 'eb0385eb8fe609e5f22d13c74cb1898a';
+
+var oldestCityIndex = localStorage.getItem('oldestCityIndex');
+if (oldestCityIndex === null) {
+  oldestCityIndex = 0;
+} else {
+  // Make sure oldestCityIndex is treated like an integer!
+  oldestCityIndex = Number.parseInt(oldestCityIndex);
+}
+
+console.log('oldestCityIndex:', oldestCityIndex);
+
+var storedCities = new Array(max_cities_stored_count).fill('');
+
+// Determine the cities that might already be in localStorage ...
+for (let i = 0; i < max_cities_stored_count; i++) {
+  const storedCity = localStorage.getItem(`cityName-${i}`);
+  if (storedCity) {
+    storedCities[i] = storedCity;
+  } else {
+    // If nothing is stored at `cityName-${i}` nothing more to get ...
+    break;
+  }
+}
+
+console.log('storedCities:', JSON.stringify(storedCities));
+
+function nextCityIndex(index) {
+  return (index + 1) % max_cities_stored_count;
+}
+
+function previousCityIndex(index) {
+  return (max_cities_stored_count + index - 1) % max_cities_stored_count;
+}
+
+function displaySavedCityButtons() {
+  // TODO: Display the buttons based on the contents of the storedCities[] array ...
+  console.log('We will display buttons like this ...');
+  let buttonIndex = 0;
+
+  for (let i = previousCityIndex(oldestCityIndex);
+     buttonIndex < max_cities_stored_count;
+     i = previousCityIndex(i)) {
+
+    if (storedCities[i]) {
+      console.log(`${buttonIndex}. "${storedCities[i]}"`);
+      buttonIndex++;
+    } else {
+      // If nothing is stored at storedCities[i] nothing more to show ...
+      break;
+    }
+  }
+
+  console.log('This many buttons:', buttonIndex);
+}
+
+// Just call displaySavedCityButtons() from the start, to show it all right away ...
+displaySavedCityButtons();
+
+function storeSavedCity(city) {
+  storedCities[oldestCityIndex] = city;
+  localStorage.setItem(`cityName-${oldestCityIndex}`, city);
+  oldestCityIndex = nextCityIndex(oldestCityIndex);
+  localStorage.setItem('oldestCityIndex', oldestCityIndex);
+  console.log('oldestCityIndex:', oldestCityIndex);
+  console.log('storedCities:', JSON.stringify(storedCities));
+  displaySavedCityButtons();
+}
 
 const cityNameEl = document.getElementById('cityName');
 const projectFormEl = document.getElementById('project-form');
@@ -79,7 +147,7 @@ const getCityWeather = function (cityName) {
         cityName: data.name,
         // For some reason this api returns dt as seconds since Epoch
         // so I need to multiply it by 1000 to work with Javascript Date() ...
-        currentDate: new Date(data.dt * 1000).toLocaleDateString(),
+        currentDate: new Date(data.dt * 1000).toDateString(),
         windSpeed: data.wind.speed,
         temperature: data.main.temp,
         humidity: data.main.humidity,
@@ -95,16 +163,34 @@ const getCityWeather = function (cityName) {
     });
 }
 
+
+function displayLastCitySearch() {
+  var lastCitySearch = localStorage.getItem(`cityName${i}`);
+
+  lastCitySearchEl = document.getElementById('cityName', `${i}`);
+  var btn = document.createElement('button');
+  var buttonTextNode = document.createTextNode(lastCitySearch);
+  btn.appendChild(buttonTextNode);
+  lastCitySearchEl.appendChild(btn);
+
+  if (lastCitySearch) {
+    lastCitySearch.textContent = `${cityName}`;
+  } else {
+    lastCitySearch.textContent = '';
+  }
+
+}
+
+
 const formSubmitHandler = function(event) {
   console.log('formSubmitHandler()');
   event.preventDefault();
   const cityName = cityNameEl.value.trim();
   console.log('cityName:', cityName);
   if (cityName) {
+    storeSavedCity(cityName);
     getCityWeather(cityName);
   }
 }
-
-// TODO: Print 5 day forecast in the allotted cards
 
 projectFormEl.addEventListener('submit', formSubmitHandler);
