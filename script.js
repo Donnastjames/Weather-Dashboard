@@ -12,6 +12,12 @@ const currentUVIndexEl = document.getElementById('currentUVIndex');
 const weatherIconEl = document.getElementById('weatherIcon');
 const currentDateEl = document.getElementById('currentDate');
 
+const forecastDateEls = document.querySelectorAll('.forecastDate');
+const weatherIconEls = document.querySelectorAll('.weatherIcon');
+const temperatureForecastEls = document.querySelectorAll('.temperatureForecast');
+const windForecastEls = document.querySelectorAll('.windForecast');
+const humidityForecastEls = document.querySelectorAll('.humidityForecast');
+
 function displayCityWeather({ cityName, currentDate, windSpeed, temperature, humidity }) {
   console.log(`displayCityWeather("${cityName}", "${currentDate}", "${windSpeed}", "${temperature}", "${humidity}")`);
   currentCityEl.innerText = cityName;
@@ -25,11 +31,22 @@ function displayUvIndex(uvIndex) {
   currentUVIndexEl.innerText = "UV Index: " + uvIndex;
 }
 
-function displayWeatherIcon(icon) {
-  console.log(`displayWeatherIcon("${icon}")`);
+function displayWeatherIcon(el, icon) {
+  console.log(`displayWeatherIcon(el, "${icon}")`);
   const requestURL = `http://openweathermap.org/img/wn/${icon}@2x.png`;
   console.log('displayWeatherIcon()', requestURL);
-  weatherIconEl.setAttribute('src', requestURL);
+  el.setAttribute('src', requestURL);
+}
+
+function displayFiveDayForecast(days) {
+  console.log('displayFiveDayForcast() called with:', days);
+  for (let i = 0; i < days.length; i++) {
+    forecastDateEls[i].innerText = new Date(days[i].dt * 1000).toLocaleDateString();
+    displayWeatherIcon(weatherIconEls[i], days[i].weather[0].icon);
+    temperatureForecastEls[i].innerText = `Temp: ${days[i].main.temp}`;
+    windForecastEls[i].innerText = `Wind: ${days[i].wind.speed} mph`;
+    humidityForecastEls[i].innerText = `Humidity: ${days[i].main.humidity}`;
+  }
 }
 
 const getUvIndex = function({ lat, lon }) {
@@ -65,17 +82,32 @@ const getCityWeather = function (cityName) {
         temperature: data.main.temp,
         humidity: data.main.humidity,
       });
+      displayWeatherIcon(
+        weatherIconEl,
+        data.weather[0].icon,
+      );
       getUvIndex({
         lat: data.coord.lat,
         lon: data.coord.lon,
       });
-      displayWeatherIcon(
-        data.weather[0].icon,
-      );
     });
 }
 
-// const getFiveDayForecast = function (cityName)
+
+
+const getFiveDayForecast = function (cityName) {
+  const requestURL = `${base_url}/forecast?q=${cityName}&units=imperial&appid=${appid}`;
+  console.log('getFiveDayForecast() requestURL:', requestURL);
+  fetch(requestURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log('3. data:\n', data);
+      console.log('4. data:\n', JSON.stringify(data, null, 2));
+      displayFiveDayForecast(data.list);
+    });
+}
 
 const formSubmitHandler = function(event) {
   console.log('formSubmitHandler()');
@@ -84,6 +116,7 @@ const formSubmitHandler = function(event) {
   console.log('cityName:', cityName);
   if (cityName) {
     getCityWeather(cityName);
+    getFiveDayForecast(cityName);
   }
 }
 
