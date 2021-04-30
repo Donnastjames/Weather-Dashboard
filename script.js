@@ -40,17 +40,18 @@ function displayWeatherIcon(el, icon) {
 
 function displayFiveDayForecast(days) {
   console.log('displayFiveDayForcast() called with:', days);
-  for (let i = 0; i < days.length; i++) {
-    forecastDateEls[i].innerText = new Date(days[i].dt * 1000).toLocaleDateString();
-    displayWeatherIcon(weatherIconEls[i], days[i].weather[0].icon);
-    temperatureForecastEls[i].innerText = `Temp: ${days[i].main.temp}`;
-    windForecastEls[i].innerText = `Wind: ${days[i].wind.speed} mph`;
-    humidityForecastEls[i].innerText = `Humidity: ${days[i].main.humidity}`;
+  // Taking days[1], [2] ... [5], skipping zero which is the current day ...
+  for (let i = 0; i < Math.min(forecastDateEls.length, days.length - 1); i++) {
+    forecastDateEls[i].innerText = new Date(days[i + 1].dt * 1000).toDateString();
+    displayWeatherIcon(weatherIconEls[i], days[i + 1].weather[0].icon);
+    temperatureForecastEls[i].innerText = `Temp: ${days[i + 1].temp.day}`;
+    windForecastEls[i].innerText = `Wind: ${days[i + 1].wind_speed} mph`;
+    humidityForecastEls[i].innerText = `Humidity: ${days[i + 1].humidity}`;
   }
 }
 
 const getUvIndex = function({ lat, lon }) {
-  const requestUrl = `${base_url}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&units=imperial&appid=${appid}`;
+  const requestUrl = `${base_url}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=imperial&appid=${appid}`;
   console.log('getUvIndex() requestUrl:', requestUrl);
   fetch(requestUrl)
     .then(function (response) {
@@ -60,6 +61,7 @@ const getUvIndex = function({ lat, lon }) {
       console.log('1) data:\n', data);
       console.log('2) data:\n', JSON.stringify(data, null, 2));
       displayUvIndex(data.current.uvi);
+      displayFiveDayForecast(data.daily);
     })
 }
 
@@ -93,22 +95,6 @@ const getCityWeather = function (cityName) {
     });
 }
 
-
-
-const getFiveDayForecast = function (cityName) {
-  const requestURL = `${base_url}/forecast?q=${cityName}&units=imperial&appid=${appid}`;
-  console.log('getFiveDayForecast() requestURL:', requestURL);
-  fetch(requestURL)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log('3. data:\n', data);
-      console.log('4. data:\n', JSON.stringify(data, null, 2));
-      displayFiveDayForecast(data.list);
-    });
-}
-
 const formSubmitHandler = function(event) {
   console.log('formSubmitHandler()');
   event.preventDefault();
@@ -116,7 +102,6 @@ const formSubmitHandler = function(event) {
   console.log('cityName:', cityName);
   if (cityName) {
     getCityWeather(cityName);
-    getFiveDayForecast(cityName);
   }
 }
 
