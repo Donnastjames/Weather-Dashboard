@@ -75,3 +75,28 @@ img {
   display: block;
   width: 40px;
 }
+
+.low {
+  background-color: green;
+  color: black;
+}
+
+.moderate {
+  background-color: yellow;
+  color: black;
+}
+
+.high {
+  background-color: orange;
+  color: black;
+}
+
+.veryHigh {
+  background-color: red;
+  color: black;
+}
+
+.extreme {
+  background-color: mediumpurple;
+  color: black;
+}

@@ -72,7 +72,11 @@
                 <th id="currentHumidity" scope="row">Humidity:</th>
               </tr>
               <tr>
-                <th id="currentUVIndex" scope="row">UV Index:</th>
+                <th scope="row">UV Index: 
+                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Disabled tooltip">
+                  <button id="currentUVIndex" class="btn" type="button"></button>
+                </span>
+                </th>
               </tr>
             </tbody>
           </table>
@@ -117,11 +121,11 @@
             </div>
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title forecastDate">Date:</h5>
+                <h5 class="card-title forecastDate">Date</h5>
                 <img class="weatherIcon" />
-                <p class="card-text temperatureForecast">Temp:</p>
-                <p class="card-text windForecast">Wind:</p>
-                <p class="card-text humidityForecast">Humidity:</p>
+                <p class="card-text temperatureForecast">Temp</p>
+                <p class="card-text windForecast">Wind</p>
+                <p class="card-text humidityForecast">Humidity</p>
               </div>
             </div>
           </div>

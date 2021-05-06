@@ -114,7 +114,21 @@ function displayCityWeather({ cityName, currentDate, windSpeed, temperature, hum
 }
 
 function displayUvIndex(uvIndex) {
-  currentUVIndexEl.innerText = "UV Index: " + uvIndex;
+  let colorClassName;
+  if (uvIndex <= 2) {
+    colorClassName = "low"; 
+  } else if (uvIndex <= 5) {
+    colorClassName = "moderate";
+  } else if (uvIndex <= 8) {
+    colorClassName = "high";
+  } else if (uvIndex <= 10) {
+    colorClassName = "veryHigh";
+  } else {
+    colorClassName = "extreme";
+  }
+
+  currentUVIndexEl.className = `btn ${colorClassName}`;
+  currentUVIndexEl.innerText = uvIndex;
 }
 
 function displayWeatherIcon(el, icon) {
@@ -148,7 +162,7 @@ const getUvIndex = function({ lat, lon }) {
       console.log('2) data:\n', JSON.stringify(data, null, 2));
       displayUvIndex(data.current.uvi);
       displayFiveDayForecast(data.daily);
-    })
+    });
 }
 
 const getCityWeather = function (cityName) {
