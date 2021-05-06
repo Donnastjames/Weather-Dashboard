@@ -27,6 +27,14 @@ thead {
   font-weight: 700;
 }
 
+.headerNoBreak {
+  display: flex;
+}
+
+.card {
+  background: skyblue;
+}
+
 .custom-card .card-header,
 .custom-card .card-footer {
   background-color: var(--darkblue);

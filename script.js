@@ -107,9 +107,9 @@ const humidityForecastEls = document.querySelectorAll('.humidityForecast');
 function displayCityWeather({ cityName, currentDate, windSpeed, temperature, humidity }) {
   console.log(`displayCityWeather("${cityName}", "${currentDate}", "${windSpeed}", "${temperature}", "${humidity}")`);
   currentCityEl.innerText = cityName;
-  currentDateEl.innerText = currentDate;
+  currentDateEl.innerText = `(${currentDate})`;
   currentWindEl.innerText = "Wind: " + windSpeed + " mph";
-  currentTempEl.innerText = "Temp: " + temperature + "\xB0F";
+  currentTempEl.innerText = "Temp: " + Math.round(temperature) + "\xB0F";
   currentHumidityEl.innerText = "Humidity: " + humidity;
 }
 
@@ -144,7 +144,7 @@ function displayFiveDayForecast(days) {
   for (let i = 0; i < Math.min(forecastDateEls.length, days.length - 1); i++) {
     forecastDateEls[i].innerText = new Date(days[i + 1].dt * 1000).toDateString();
     displayWeatherIcon(weatherIconEls[i], days[i + 1].weather[0].icon);
-    temperatureForecastEls[i].innerText = `Temp: ${days[i + 1].temp.day} \xB0F`;
+    temperatureForecastEls[i].innerText = `Temp: ${Math.round(days[i + 1].temp.day)} \xB0F`;
     windForecastEls[i].innerText = `Wind: ${days[i + 1].wind_speed} mph`;
     humidityForecastEls[i].innerText = `Humidity: ${days[i + 1].humidity}`;
   }
