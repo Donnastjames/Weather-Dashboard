@@ -1,5 +1,5 @@
 
-const max_cities_stored_count = 4; // TODO: Change back to 8 later
+const max_cities_stored_count = 8;
 const base_url = 'https://api.openweathermap.org/data/2.5'
 const appid = 'eb0385eb8fe609e5f22d13c74cb1898a';
 
@@ -57,12 +57,14 @@ function displaySavedCityButtons() {
     
     if (storedCities[i]) {
       console.log(`${buttonIndex}. "${storedCities[i]}"`);
-      // displaySavedCity.textContent = `${cityName}`;
       const cityButton = document.createElement('button');
       cityButton.setAttribute('type', 'button');
       cityButton.setAttribute('class', 'btn btn-secondary btn-lg btn-block');
       const buttonTextNode = document.createTextNode(storedCities[i]);
       cityButton.appendChild(buttonTextNode);
+      cityButton.addEventListener('click', function() {
+        getCityWeather(storedCities[i]);
+      });
       savedCitiesContainerEl.appendChild(cityButton);
       buttonIndex++;
     } else {
