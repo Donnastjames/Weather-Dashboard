@@ -36,27 +36,43 @@ function previousCityIndex(index) {
   return (max_cities_stored_count + index - 1) % max_cities_stored_count;
 }
 
+// https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
+
 function displaySavedCityButtons() {
   // TODO: Display the buttons based on the contents of the storedCities[] array ...
   console.log('We will display buttons like this ...');
+  const savedCitiesContainerEl = document.getElementById('savedCitiesContainer');
+  removeAllChildNodes(savedCitiesContainerEl);
+
   let buttonIndex = 0;
 
   for (let i = previousCityIndex(oldestCityIndex);
      buttonIndex < max_cities_stored_count;
      i = previousCityIndex(i)) {
-
+    
     if (storedCities[i]) {
       console.log(`${buttonIndex}. "${storedCities[i]}"`);
+      // displaySavedCity.textContent = `${cityName}`;
+      const cityButton = document.createElement('button');
+      cityButton.setAttribute('type', 'button');
+      cityButton.setAttribute('class', 'btn btn-secondary btn-lg btn-block');
+      const buttonTextNode = document.createTextNode(storedCities[i]);
+      cityButton.appendChild(buttonTextNode);
+      savedCitiesContainerEl.appendChild(cityButton);
       buttonIndex++;
     } else {
       // If nothing is stored at storedCities[i] nothing more to show ...
       break;
     }
   }
-
-  console.log('This many buttons:', buttonIndex);
+  console.log('This many buttons:', buttonIndex); 
 }
-
+ 
 // Just call displaySavedCityButtons() from the start, to show it all right away ...
 displaySavedCityButtons();
 
@@ -91,7 +107,7 @@ function displayCityWeather({ cityName, currentDate, windSpeed, temperature, hum
   currentCityEl.innerText = cityName;
   currentDateEl.innerText = currentDate;
   currentWindEl.innerText = "Wind: " + windSpeed + " mph";
-  currentTempEl.innerText = "Temp: " + temperature;
+  currentTempEl.innerText = "Temp: " + temperature + "\xB0F";
   currentHumidityEl.innerText = "Humidity: " + humidity;
 }
 
@@ -112,7 +128,7 @@ function displayFiveDayForecast(days) {
   for (let i = 0; i < Math.min(forecastDateEls.length, days.length - 1); i++) {
     forecastDateEls[i].innerText = new Date(days[i + 1].dt * 1000).toDateString();
     displayWeatherIcon(weatherIconEls[i], days[i + 1].weather[0].icon);
-    temperatureForecastEls[i].innerText = `Temp: ${days[i + 1].temp.day}`;
+    temperatureForecastEls[i].innerText = `Temp: ${days[i + 1].temp.day} \xB0F`;
     windForecastEls[i].innerText = `Wind: ${days[i + 1].wind_speed} mph`;
     humidityForecastEls[i].innerText = `Humidity: ${days[i + 1].humidity}`;
   }
@@ -161,24 +177,6 @@ const getCityWeather = function (cityName) {
         lon: data.coord.lon,
       });
     });
-}
-
-
-function displayLastCitySearch() {
-  var lastCitySearch = localStorage.getItem(`cityName${i}`);
-
-  lastCitySearchEl = document.getElementById('cityName', `${i}`);
-  var btn = document.createElement('button');
-  var buttonTextNode = document.createTextNode(lastCitySearch);
-  btn.appendChild(buttonTextNode);
-  lastCitySearchEl.appendChild(btn);
-
-  if (lastCitySearch) {
-    lastCitySearch.textContent = `${cityName}`;
-  } else {
-    lastCitySearch.textContent = '';
-  }
-
 }
 
 
