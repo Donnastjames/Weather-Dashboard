@@ -41,14 +41,11 @@ thead {
   color: var(--light);
 }
 
-.custom-card {
-  border-color: var(--darkblue);
-}
-
 .custom-card .card-body,
 .custom-modal .modal-body {
   background-color: var(--light);
   color: var(--darkblue);
+  border-color: var(--darkblue);
 }
 
 .custom-btn {
@@ -64,19 +61,6 @@ thead {
 .custom-table tbody {
   background-color: var(--darkblue);
   color: var(--light);
-}
-
-.delete-project-btn {
-  cursor: pointer;
-}
-
-.container {
-  display: block;
-  margin-left: 368px;
-}
-
-.custom-table {
-  line-height: 160px;
 }
 
 img {
@@ -107,4 +91,24 @@ img {
 .extreme {
   background-color: mediumpurple;
   color: black;
+}
+
+@media screen and (max-width: 576px) {
+  body {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  body {
+    width: 100%;
+  }
 }
