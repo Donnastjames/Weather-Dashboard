@@ -15,4 +15,4 @@ For each time a user searches weather for a city, this city is saved as a button
   <img src="./WeatherDashboard.gif" width="600">
 </p>
 
-Link to deployed project: // TODO
+Link to deployed project: https://donnastjames.github.io/Weather-Dashboard/
