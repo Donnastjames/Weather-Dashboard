@@ -79,6 +79,10 @@ function displaySavedCityButtons() {
 displaySavedCityButtons();
 
 function storeSavedCity(city) {
+  if (storedCities.includes(city)) {
+    console.log(`The city "${city}" is already stored!`);
+    return;
+  }
   storedCities[oldestCityIndex] = city;
   localStorage.setItem(`cityName-${oldestCityIndex}`, city);
   oldestCityIndex = nextCityIndex(oldestCityIndex);
