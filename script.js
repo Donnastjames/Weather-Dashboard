@@ -44,7 +44,7 @@ function removeAllChildNodes(parent) {
 }
 
 function displaySavedCityButtons() {
-  // TODO: Display the buttons based on the contents of the storedCities[] array ...
+  // Display the buttons based on the contents of the storedCities[] array ...
   console.log('We will display buttons like this ...');
   const savedCitiesContainerEl = document.getElementById('savedCitiesContainer');
   removeAllChildNodes(savedCitiesContainerEl);
@@ -196,7 +196,7 @@ const getCityWeather = function (cityName) {
         lat: data.coord.lat,
         lon: data.coord.lon,
       });
-      // Because data.name came back from the fetch(), assume it is a better cityName ...
+      // Because data.name came back from the fetch(), assume data.name is capitalized properly ...
       storeSavedCity(data.name);
     })
     .catch(function(error) {
