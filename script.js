@@ -194,6 +194,9 @@ const getCityWeather = function (cityName) {
       });
       // Because data.name came back from the fetch(), assume it is a better cityName ...
       storeSavedCity(data.name);
+    })
+    .catch(function(error) {
+      alert(`The city "${cityName}" was not found.`);
     });
 }
 
