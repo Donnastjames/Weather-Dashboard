@@ -192,6 +192,8 @@ const getCityWeather = function (cityName) {
         lat: data.coord.lat,
         lon: data.coord.lon,
       });
+      // Because data.name came back from the fetch(), assume it is a better cityName ...
+      storeSavedCity(data.name);
     });
 }
 
@@ -202,7 +204,6 @@ const formSubmitHandler = function(event) {
   const cityName = cityNameEl.value.trim();
   console.log('cityName:', cityName);
   if (cityName) {
-    storeSavedCity(cityName);
     getCityWeather(cityName);
   }
 }
